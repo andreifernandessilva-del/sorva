@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Aventura no Sítio</title>
+    <style>
+        body { 
+            background-color: #e8f5e9; 
+            font-family: sans-serif; 
+            text-align: center; 
+            padding: 50px; 
+        }
+        #caixa-do-jogo {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            border: 5px solid #4caf50;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .botao-escolha {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #ff9800; /* Laranja bem visível */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .botao-escolha:hover {
+            background-color: #e68a00;
+        }
+        #texto-historia {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="caixa-do-jogo">
+        <h1>Sítio do Pica-Pau Amarelo</h1>
+        <div id="texto-historia">Carregando aventura...</div>
+        <div id="botoes-container"></div>
+    </div>
+
+    <script>
+        // Aqui estão os dados da história
+        const capitulos = {
+            inicio: {
+                texto: "A Cuca roubou a boneca Emília! O que você quer fazer primeiro?",
+                opcoes: [
+                    { texto: "Pedir ajuda ao Visconde", destino: "visconde" },
+                    { texto: "Ir direto para a caverna da Cuca", destino: "caverna" }
+                ]
+            },
+            visconde: {
+                texto: "O Visconde de Sabugosa usa sua inteligência e faz um pó mágico de invisibilidade. E agora?",
+                opcoes: [
+                    { texto: "Usar o pó e entrar na caverna", destino: "vitoria" },
+                    { texto: "Ficar com medo e voltar para casa", destino: "derrota" }
+                ]
+            },
+            caverna: {
+                texto: "Você chegou na caverna, mas a Cuca te viu! Ela está preparando um caldeirão.",
+                opcoes: [
+                    { texto: "Tentar fugir correndo", destino: "derrota" },
+                    { texto: "Oferecer um bolinho da Tia Nastácia em troca da Emília", destino: "vitoria" }
+                ]
+            },
+            vitoria: {
+                texto: "Parabéns! Você resgatou a Emília e todos estão felizes no Sítio!",
+                opcoes: [{ texto: "Jogar de Novo", destino: "inicio" }]
+            },
+            derrota: {
+                texto: "Que pena... A missão falhou e a Emília continua com a Cuca.",
+                opcoes: [{ texto: "Tentar de Novo", destino: "inicio" }]
+            }
+        };
+
+        function carregarCena(nomeCena) {
+            const cena = capitulos[nomeCena];
+            
+            // Atualiza o texto da história
+            document.getElementById('texto-historia').innerText = cena.texto;
+            
+            // Limpa os botões antigos
+            const container = document.getElementById('botoes-container');
+            container.innerHTML = '';
+
+            // Cria os novos botões
+            cena.opcoes.forEach(opcao => {
+                const botao = document.createElement('button');
+                botao.innerText = opcao.texto;
+                botao.className = 'botao-escolha';
+                botao.onclick = () => carregarCena(opcao.destino);
+                container.appendChild(botao);
+            });
+        }
+
+        // Inicia o jogo na cena 'inicio'
+        window.onload = () => carregarCena('inicio');
+    </script>
+</body>
+</html>
